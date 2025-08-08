@@ -1,0 +1,135 @@
+/*
+Theme Name: Portal Web Theme
+Description: モダンなPHP学習用WordPressテーマ
+Author: Your Name
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.4
+Requires PHP: 8.0
+License: GPL v2 or later
+Text Domain: portalweb
+*/
+
+/* リセットCSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* ヘッダー */
+.site-header {
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem 0;
+}
+
+.site-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+}
+
+/* メインコンテンツ */
+.site-main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* フッター */
+.site-footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 3rem;
+}
+
+/* 記事 */
+.post {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+}
+
+.post-title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.post-meta {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.post-content {
+    line-height: 1.8;
+}
+
+/* カレンダーのスタイル */
+.portalweb-calendar {
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+.calendar-header h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 1.2em;
+}
+
+.calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.calendar-table th,
+.calendar-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.calendar-table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    color: #495057;
+}
+
+.calendar-table td {
+    height: 40px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.calendar-table td:hover {
+    background-color: #f8f9fa;
+}
+
+.calendar-table td.today {
+    background-color: #007cba;
+    color: white;
+    font-weight: bold;
+}
+
+.calendar-table td.empty-day {
+    background-color: #fafafa;
+    cursor: default;
+}
+
+.calendar-table td.empty-day:hover {
+    background-color: #fafafa;
+}
