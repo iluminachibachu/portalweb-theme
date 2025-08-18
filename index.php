@@ -38,9 +38,20 @@ get_header(); ?>
 
             <!-- Calendar block -->
             <section class="calendar card" aria-labelledby="cal-hd">
-                <div class="month"><h3 id="cal-hd">2025年9月｜何の日カレンダー</h3></div>
+                <?php 
+                $current_year = date('Y');
+                $current_month = date('n');
+                $month_names = [
+                    1 => '1月', 2 => '2月', 3 => '3月', 4 => '4月',
+                    5 => '5月', 6 => '6月', 7 => '7月', 8 => '8月', 
+                    9 => '9月', 10 => '10月', 11 => '11月', 12 => '12月'
+                ];
+                ?>
+                <div class="month">
+                    <h3 id="cal-hd"><?php echo esc_html($current_year . '年' . $month_names[$current_month] . '｜何の日カレンダー'); ?></h3>
+                </div>
                 <div class="dow"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
-                <div class="grid" role="grid" aria-label="2025年9月のカレンダー">
+                <div class="grid" role="grid" aria-label="<?php echo esc_attr($current_year . '年' . $month_names[$current_month] . 'のカレンダー'); ?>">
                     <?php echo portalweb_display_calendar(); ?>
                 </div>
             </section>
