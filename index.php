@@ -8,54 +8,53 @@
 
 get_header(); ?>
 
-<main class="site-main">
-    <!-- カレンダーを挿入 -->
-    <div class="calendar-container">
-        <?php echo portalweb_display_calendar(); ?>
-    </div>
-    
-    <?php if (have_posts()) : ?>
-        <?php while (have_posts()) : the_post(); ?>
-            <article id="post-<?php the_ID(); ?>" <?php post_class('post'); ?>>
-                <header class="post-header">
-                    <h2 class="post-title">
-                        <a href="<?php the_permalink(); ?>">
-                            <?php the_title(); ?>
-                        </a>
-                    </h2>
-                    <div class="post-meta">
-                        投稿日: <?php echo get_the_date(); ?> | 
-                        著者: <?php the_author(); ?> |
-                        カテゴリ: <?php the_category(', '); ?>
+<main id="main" role="main">
+    <div class="grid-main">
+        <!-- Left column (article + calendar) -->
+        <div class="stack">
+            <?php if (have_posts()) : ?>
+                <?php while (have_posts()) : the_post(); ?>
+                    <article class="article card" aria-labelledby="art-hd-<?php the_ID(); ?>">
+                        <header class="card__hd" id="art-hd-<?php the_ID(); ?>">
+                            <?php echo get_the_date('n月j日'); ?> <?php the_title(); ?>
+                        </header>
+                        <div class="card__bd">
+                            <h2><?php the_title(); ?></h2>
+                            <p class="meta"><?php the_category(', '); ?></p>
+                            <div><?php the_content(); ?></div>
+                        </div>
+                    </article>
+                <?php endwhile; ?>
+            <?php else : ?>
+                <article class="article card" aria-labelledby="art-hd">
+                    <header class="card__hd" id="art-hd">9月1日 今日は何の日？</header>
+                    <div class="card__bd">
+                        <h2>防災の日</h2>
+                        <p class="meta">日本の記念日</p>
+                        <p>1923年の関東大震災を教訓として、9月1日は防災意識を高める日とされています。日常の備え（家具の固定、非常食・飲料水、安否確認の手段など）を見直すきっかけに。</p>
                     </div>
-                </header>
-                
-                <div class="post-content">
-                    <?php the_excerpt(); ?>
+                </article>
+            <?php endif; ?>
+
+            <!-- Calendar block -->
+            <section class="calendar card" aria-labelledby="cal-hd">
+                <div class="month"><h3 id="cal-hd">2025年9月｜何の日カレンダー</h3></div>
+                <div class="dow"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
+                <div class="grid" role="grid" aria-label="2025年9月のカレンダー">
+                    <?php echo portalweb_display_calendar(); ?>
                 </div>
-                
-                <footer class="post-footer">
-                    <a href="<?php the_permalink(); ?>" class="read-more">
-                        続きを読む
-                    </a>
-                </footer>
-            </article>
-        <?php endwhile; ?>
+            </section>
         
-        <?php 
-        // ページネーション（モダンな方法）
-        the_posts_pagination([
-            'prev_text' => '&laquo; 前のページ',
-            'next_text' => '次のページ &raquo;',
-        ]);
-        ?>
-        
-    <?php else : ?>
-        <div class="no-posts">
-            <h2>記事が見つかりません</h2>
-            <p>申し訳ありませんが、お探しの記事は見つかりませんでした。</p>
+            <!-- ボタン（左カラム内に移動） -->
+            <div class="bottom-row" aria-label="左カラムの操作">
+                <button class="btn" id="btnSearch" aria-haspopup="dialog" aria-controls="dlgSearch">🔍 検索</button>
+                <button class="btn" id="btnTopics" aria-haspopup="dialog" aria-controls="dlgTopics">🏷️ テーマから探す</button>
+            </div>
         </div>
-    <?php endif; ?>
+
+        <!-- Right column (sidebar) -->
+        <?php get_sidebar(); ?>
+    </div>
 </main>
 
 <?php get_footer(); ?>

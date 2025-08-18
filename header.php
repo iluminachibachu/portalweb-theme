@@ -1,45 +1,33 @@
-<!DOCTYPE html>
+<!doctype html>
 <html <?php language_attributes(); ?>>
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php wp_head(); ?>
 </head>
+<body <?php body_class('fs-medium'); ?>>
+<?php wp_body_open(); ?>
 
-<body <?php body_class(); ?>>
-    <?php wp_body_open(); ?>
-    
-    <header class="site-header">
-        <div class="container">
-            <div class="site-branding">
-                <?php if (has_custom_logo()) : ?>
-                    <?php the_custom_logo(); ?>
-                <?php else : ?>
-                    <h1 class="site-title">
-                        <a href="<?php echo esc_url(home_url('/')); ?>">
-                            <?php bloginfo('name'); ?>
-                        </a>
-                    </h1>
-                    <?php 
-                    $description = get_bloginfo('description', 'display');
-                    if ($description || is_customize_preview()) : 
-                    ?>
-                        <p class="site-description"><?php echo $description; ?></p>
-                    <?php endif; ?>
-                <?php endif; ?>
+<header class="site-header" role="banner">
+    <div class="site-header__inner">
+        <div class="brand">
+            <h1 class="site-title">
+                <a href="<?php echo esc_url(home_url('/')); ?>" rel="home">
+                    <?php bloginfo('name'); ?>
+                </a>
+            </h1>
+            <div class="brand-logo" aria-hidden="true">
+                <svg viewBox="0 0 220 48" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="1" y="1" width="218" height="46" rx="10" fill="#0b57d0" opacity=".1" stroke="#0b57d0"/>
+                    <text x="110" y="30" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="18" fill="#0b57d0">LOGO</text>
+                </svg>
             </div>
-
-            <nav class="site-navigation">
-                <?php
-                wp_nav_menu([
-                    'theme_location' => 'primary',
-                    'menu_class'     => 'primary-menu',
-                    'container'      => false,
-                    'fallback_cb'    => false,
-                ]);
-                ?>
-            </nav>
         </div>
-    </header>
+        <div class="tools">
+            <div class="font-size" role="group" aria-label="文字サイズ">
+                <button id="fsSmall" aria-pressed="false" title="文字サイズ小">小</button>
+                <button id="fsLarge" aria-pressed="false" title="文字サイズ大">大</button>
+            </div>
+        </div>
+    </div>
+</header>

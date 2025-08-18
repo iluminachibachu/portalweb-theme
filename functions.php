@@ -63,13 +63,25 @@ function portalweb_enqueue_assets(): void
         wp_get_theme()->get('Version')
     );
 
-    // JavaScriptの読み込み（存在する場合）
-    $script_path = get_template_directory() . '/assets/js/main.js';
+    // テーマのJavaScriptの読み込み（存在する場合）
+    $script_path = get_template_directory() . '/assets/js/theme.js';
     if (file_exists($script_path)) {
+        wp_enqueue_script(
+            'portalweb-theme-script',
+            get_template_directory_uri() . '/assets/js/theme.js',
+            [],
+            wp_get_theme()->get('Version'),
+            true
+        );
+    }
+
+    // メインJavaScriptの読み込み（存在する場合）
+    $main_script_path = get_template_directory() . '/assets/js/main.js';
+    if (file_exists($main_script_path)) {
         wp_enqueue_script(
             'portalweb-script',
             get_template_directory_uri() . '/assets/js/main.js',
-            [],
+            ['portalweb-theme-script'],
             wp_get_theme()->get('Version'),
             true
         );
@@ -201,7 +213,7 @@ add_action('init', 'portalweb_add_security_headers');
 
 /**
  * カレンダー表示機能
- * 指定した日の月のカレンダーを表示
+ * 指定した日の月のカレンダーを表示（新しいデザイン対応）
  */
 function portalweb_display_calendar(?int $year = null, ?int $month = null): string 
 {
@@ -214,52 +226,74 @@ function portalweb_display_calendar(?int $year = null, ?int $month = null): stri
     $last_day = clone $first_day;
     $last_day->modify('last day of this month');
     
-    // 月名の取得
-    $month_names = [
-        1 => '1月', 2 => '2月', 3 => '3月', 4 => '4月',
-        5 => '5月', 6 => '6月', 7 => '7月', 8 => '8月',
-        9 => '9月', 10 => '10月', 11 => '11月', 12 => '12月'
-    ];
-    
     $start_weekday = (int)$first_day->format('w'); // 0=日曜日
     $days_in_month = (int)$last_day->format('j');
     
-    // カレンダーHTML構築
-    $calendar_html = '<div class="portalweb-calendar">';
-    $calendar_html .= '<div class="calendar-header">';
-    $calendar_html .= '<h3>' . esc_html($year . '年' . $month_names[$month]) . '</h3>';
-    $calendar_html .= '</div>';
+    // 前月末日を計算
+    $prev_month = clone $first_day;
+    $prev_month->modify('last day of previous month');
+    $prev_month_days = (int)$prev_month->format('j');
     
-    $calendar_html .= '<table class="calendar-table">';
-    $calendar_html .= '<thead><tr>';
-    $weekdays = ['日', '月', '火', '水', '木', '金', '土'];
-    foreach ($weekdays as $day) {
-        $calendar_html .= '<th>' . esc_html($day) . '</th>';
-    }
-    $calendar_html .= '</tr></thead><tbody>';
-    
-    // カレンダーの日付を生成
+    $calendar_html = '';
     $current_day = 1;
     $weeks = ceil(($start_weekday + $days_in_month) / 7);
     
     for ($week = 0; $week < $weeks; $week++) {
-        $calendar_html .= '<tr>';
         for ($weekday = 0; $weekday < 7; $weekday++) {
-            if (($week === 0 && $weekday < $start_weekday) || $current_day > $days_in_month) {
-                $calendar_html .= '<td class="empty-day"></td>';
+            if ($week === 0 && $weekday < $start_weekday) {
+                // 前月の日付
+                $prev_day = $prev_month_days - ($start_weekday - $weekday - 1);
+                $calendar_html .= sprintf(
+                    '<div class="cell is-outside" role="gridcell" aria-label="%d月%d日"><span class="n" aria-hidden="true">%d</span></div>',
+                    $month === 1 ? 12 : $month - 1,
+                    $prev_day,
+                    $prev_day
+                );
+            } elseif ($current_day > $days_in_month) {
+                // 次月の日付
+                $next_day = $current_day - $days_in_month;
+                $calendar_html .= sprintf(
+                    '<div class="cell is-outside" role="gridcell" aria-label="%d月%d日"><span class="n" aria-hidden="true">%d</span></div>',
+                    $month === 12 ? 1 : $month + 1,
+                    $next_day,
+                    $next_day
+                );
+                $current_day++;
             } else {
-                $today_class = '';
+                // 当月の日付
+                $classes = ['cell'];
+                $label = sprintf('%d月%d日', $month, $current_day);
+                $tag = '';
+                
+                // 今日の日付チェック
                 if ($year === (int)date('Y') && $month === (int)date('n') && $current_day === (int)date('j')) {
-                    $today_class = ' class="today"';
+                    $classes[] = 'is-today';
                 }
-                $calendar_html .= '<td' . $today_class . '>' . esc_html($current_day) . '</td>';
+                
+                // 特別な日をチェック（例：防災の日、秋分の日など）
+                if ($month === 9) {
+                    if ($current_day === 1) {
+                        $classes[] = 'is-feature';
+                        $tag = '<span class="tag">防災の日</span>';
+                        $label .= ' 防災の日';
+                    } elseif ($current_day === 23) {
+                        $classes[] = 'is-feature';
+                        $tag = '<span class="tag">秋分の日</span>';
+                        $label .= ' 秋分の日';
+                    }
+                }
+                
+                $calendar_html .= sprintf(
+                    '<div class="%s" role="gridcell" aria-label="%s"><span class="n">%d</span>%s</div>',
+                    esc_attr(implode(' ', $classes)),
+                    esc_attr($label),
+                    $current_day,
+                    $tag
+                );
                 $current_day++;
             }
         }
-        $calendar_html .= '</tr>';
     }
-    
-    $calendar_html .= '</tbody></table></div>';
     
     return $calendar_html;
 }
