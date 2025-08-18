@@ -13,18 +13,20 @@ get_header(); ?>
         <!-- Left column (article + calendar) -->
         <div class="stack">
             <?php if (have_posts()) : ?>
-                <?php while (have_posts()) : the_post(); ?>
-                    <article class="article card" aria-labelledby="art-hd-<?php the_ID(); ?>">
-                        <header class="card__hd" id="art-hd-<?php the_ID(); ?>">
-                            <?php echo get_the_date('n月j日'); ?> <?php the_title(); ?>
-                        </header>
-                        <div class="card__bd">
-                            <h2><?php the_title(); ?></h2>
-                            <p class="meta"><?php the_category(', '); ?></p>
-                            <div><?php the_content(); ?></div>
-                        </div>
-                    </article>
-                <?php endwhile; ?>
+                <?php 
+                // 最新の記事を1つだけ取得
+                the_post(); 
+                ?>
+                <article class="article card" aria-labelledby="art-hd-<?php the_ID(); ?>">
+                    <header class="card__hd" id="art-hd-<?php the_ID(); ?>">
+                        <?php echo get_the_date('n月j日'); ?> <?php the_title(); ?>
+                    </header>
+                    <div class="card__bd">
+                        <h2><?php the_title(); ?></h2>
+                        <p class="meta"><?php the_category(', '); ?></p>
+                        <div><?php the_content(); ?></div>
+                    </div>
+                </article>
             <?php else : ?>
                 <article class="article card" aria-labelledby="art-hd">
                     <header class="card__hd" id="art-hd">9月1日 今日は何の日？</header>
