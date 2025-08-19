@@ -11,11 +11,11 @@
 <header class="site-header" role="banner">
     <div class="site-header__inner">
         <div class="brand">
-            <h1 class="site-title">
+            <h4 class="site-title">
                 <a href="<?php echo esc_url(home_url('/')); ?>" rel="home">
-                    <?php bloginfo('name'); ?>
+                    今日は何の日？
                 </a>
-            </h1>
+            </h4>
             <div class="brand-logo" aria-hidden="true">
                 <svg viewBox="0 0 220 48" xmlns="http://www.w3.org/2000/svg">
                     <rect x="1" y="1" width="218" height="46" rx="10" fill="#0b57d0" opacity=".1" stroke="#0b57d0"/>
