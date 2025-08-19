@@ -52,7 +52,11 @@ get_header(); ?>
                 <div class="month">
                     <h3 id="cal-hd"><?php echo esc_html($current_year . '年' . $month_names[$current_month] . '｜何の日カレンダー'); ?></h3>
                 </div>
-                <div class="dow"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
+                <div class="month-nav">
+                    <?php for ($i = 1; $i <= 12; $i++) : ?>
+                        <span class="month-num<?php echo ($i == $current_month) ? ' active' : ''; ?>"><?php echo $i; ?></span>
+                    <?php endfor; ?>
+                </div>
                 <div class="grid" role="grid" aria-label="<?php echo esc_attr($current_year . '年' . $month_names[$current_month] . 'のカレンダー'); ?>">
                     <?php echo portalweb_display_calendar(); ?>
                 </div>
