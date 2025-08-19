@@ -53,9 +53,16 @@ get_header(); ?>
                     <h3 id="cal-hd"><?php echo esc_html($current_year . '年' . $month_names[$current_month] . '｜何の日カレンダー'); ?></h3>
                 </div>
                 <div class="month-nav">
-                    <?php for ($i = 1; $i <= 12; $i++) : ?>
-                        <span class="month-num<?php echo ($i == $current_month) ? ' active' : ''; ?>"><?php echo $i; ?></span>
-                    <?php endfor; ?>
+                    <div class="month-row">
+                        <?php for ($i = 1; $i <= 6; $i++) : ?>
+                            <h3 class="month-num<?php echo ($i == $current_month) ? ' active' : ''; ?>"><?php echo $i; ?>月</h3>
+                        <?php endfor; ?>
+                    </div>
+                    <div class="month-row">
+                        <?php for ($i = 7; $i <= 12; $i++) : ?>
+                            <h3 class="month-num<?php echo ($i == $current_month) ? ' active' : ''; ?>"><?php echo $i; ?>月</h3>
+                        <?php endfor; ?>
+                    </div>
                 </div>
                 <div class="grid" role="grid" aria-label="<?php echo esc_attr($current_year . '年' . $month_names[$current_month] . 'のカレンダー'); ?>">
                     <?php echo portalweb_display_calendar(); ?>
